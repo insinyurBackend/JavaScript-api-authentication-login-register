@@ -1,0 +1,30 @@
+{
+  "name": "javascript-api-authentication-login-register",
+  "version": "1.0.0",
+  "description": "JavaScript restpul api authentication login-register",
+  "homepage": "https://github.com/insinyurBackend/JavaScript-api-authentication-login-register#readme",
+  "bugs": {
+    "url": "https://github.com/insinyurBackend/JavaScript-api-authentication-login-register/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/insinyurBackend/JavaScript-api-authentication-login-register.git"
+  },
+  "license": "ISC",
+  "author": "TA'IN SIDDIK",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node --watch ./src/app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-fileupload": "^1.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.12.0",
+    "sequelize": "^6.37.5"
+  }
+}
