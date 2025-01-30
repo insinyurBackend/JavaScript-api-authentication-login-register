@@ -30,13 +30,6 @@ const Users = db.define('users', {
             isEmail: true
         }
     },
-    role: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        }
-    },
     image: {
         type: DataTypes.STRING,
         allowNull: true,
