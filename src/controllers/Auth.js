@@ -2,7 +2,7 @@ import Users from "../models/User.js"
 import validator from "validator"
 import bcrypt from "bcrypt"
 import "dotenv/config"
-import jwt, { decode } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 // Register
 export const register = async (req, res) => {
@@ -130,5 +130,14 @@ export const refreshToken = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+    }
+}
+
+// Logout
+export const logout = async (req, res) => {
+    try {
+
+    } catch (error) {
+
     }
 }
