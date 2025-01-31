@@ -112,7 +112,7 @@ export const refreshToken = async (req, res) => {
     try {
         const refresh = req.cookies.refreshToken
         if (!refresh) {
-            return res.status(401).json({ message: "Refresh token not found" })
+            return res.status(401).json({ message: "No user login. login please" })
         }
         const user = await Users.findOne({
             where: {
@@ -146,7 +146,7 @@ export const logout = async (req, res) => {
     try {
         const token = req.cookies.refreshToken
         if (!token) {
-            return res.status(404).json({ message: "Refresh token not found" })
+            return res.status(404).json({ message: "User not found, login please" })
         }
         const user = await Users.findOne({
             where: {

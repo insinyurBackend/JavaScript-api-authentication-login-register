@@ -12,7 +12,7 @@ export const verifyToken = async (req, res, next) => {
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(403).json({ message: "Access token has expired" })
+            return res.status(403).json({ message: "No access token" })
         }
         req.email = decoded.email
         next()
