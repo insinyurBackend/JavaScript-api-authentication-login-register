@@ -26,7 +26,7 @@ export const register = async (req, res) => {
         }
 
         // check password and confirm password
-        const password = req.body.password.replace(/[^a-zA-Z0-9]/g, "")
+        const password = req.body.password
         const confPassword = req.body.confPassword
 
         if (password !== confPassword) {
@@ -49,12 +49,14 @@ export const register = async (req, res) => {
                 uuid: regist.uuid,
                 username: regist.username,
                 email: regist.email,
-                password: regist.password
             }
         })
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({
+            status: "Internal server error",
+            message: "Registration failed"
+        });
     }
 }
 
