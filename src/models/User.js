@@ -30,13 +30,6 @@ const Users = db.define('users', {
             isEmail: true
         }
     },
-    image: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-            isUrl: true,
-        }
-    },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
