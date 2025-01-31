@@ -6,7 +6,7 @@ export const verifyToken = async (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) {
         return res.status(401).json({
-            status: "Login Failed",
+            status: "Failed",
             message: "Token not found, login please"
         })
     }

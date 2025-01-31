@@ -79,7 +79,7 @@ export const login = async (req, res) => {
         const username = user.username
         const email = user.email
 
-        const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
+        const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
         const refreshToken = jwt.sign({ userId, username, email }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
         await Users.update({ refresh_token: refreshToken }, {
@@ -129,7 +129,7 @@ export const refreshToken = async (req, res) => {
             const userId = user.uuid
             const username = user.username
             const email = user.email
-            const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
+            const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
             res.status(201).json({
                 status: "Success",
                 message: "Generate new access token",
@@ -154,7 +154,7 @@ export const logout = async (req, res) => {
             }
         })
         if (!user) {
-            return res.status(403).json({ message: "No user login" })
+            return res.status(403).json({ message: "Refresh token not found, login please" })
         }
         const email = user.email
         const username = user.username
