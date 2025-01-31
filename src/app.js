@@ -15,7 +15,6 @@ const dbSync = async () => {
     try {
         await db.authenticate()
         console.log('Database connected successfully')
-        // await db.sync({ force: true })
     } catch (error) {
         console.log('Database connection has filed', error)
     }
