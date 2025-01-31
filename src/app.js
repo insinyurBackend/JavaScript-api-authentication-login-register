@@ -5,6 +5,7 @@ import cors from "cors"
 import morgan from "morgan"
 import db from "./config/database/Connection.js"
 import Users from "./routers/User.js"
+import Auth from "./routers/Auth.js"
 
 // Set up Server
 const app = express()
@@ -28,6 +29,7 @@ app.use(morgan('tiny'))
 
 // routes
 app.use(Users)
+app.use(Auth)
 
 app.listen(port, () => {
     console.log(`Server up and running on port ${port}`)
