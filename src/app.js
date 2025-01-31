@@ -3,6 +3,7 @@ import fileUpload from "express-fileupload"
 import "dotenv/config"
 import cors from "cors"
 import morgan from "morgan"
+import cookieParser from "cookie-parser"
 import db from "./config/database/Connection.js"
 import Users from "./routers/User.js"
 import Auth from "./routers/Auth.js"
@@ -25,6 +26,7 @@ dbSync()
 app.use(express.json())
 app.use(fileUpload())
 app.use(cors())
+app.use(cookieParser())
 app.use(morgan('tiny'))
 
 // routes

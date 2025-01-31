@@ -1,6 +1,8 @@
 import Users from "../models/User.js"
 import validator from "validator"
 import bcrypt from "bcrypt"
+import "dotenv/config"
+import jwt, { decode } from "jsonwebtoken"
 
 // Register
 export const register = async (req, res) => {
@@ -61,11 +63,72 @@ export const register = async (req, res) => {
 }
 
 // Login
-
 export const login = async (req, res) => {
     try {
+        const user = await Users.findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+        const match = await bcrypt.compare(req.body.password, user.password)
+        if (!match) {
+            return res.status(400).json({ message: "Wrong Password" })
+        }
+
+        const userId = user.uuid
+        const username = user.username
+        const email = user.email
+
+        const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
+        const refreshToken = jwt.sign({ userId, username, email }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
+
+        await Users.update({ refresh_token: refreshToken }, {
+            where: {
+                uuid: userId
+            }
+        })
+
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000,
+        })
+
+        res.json({ accessToken })
 
     } catch (error) {
+        res.status(404).json({
+            status: "Failed",
+            message: "User not Found"
+        })
+    }
+}
 
+// Refresh Token
+export const refreshToken = async (req, res) => {
+    try {
+        const refresh = req.cookies.refreshToken
+        if (!refresh) {
+            return res.status(401).json({ message: "Refresh token not found" })
+        }
+        const user = await Users.findOne({
+            where: {
+                refresh_token: refresh
+            }
+        })
+        if (!user) {
+            return res.status(403).json({ message: "Refresh token not match" })
+        }
+        jwt.verify(refresh, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(403).json({ message: "Refresh token error" })
+            }
+            const userId = user.uuid
+            const username = user.username
+            const email = user.email
+            const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
+            res.json({ accessToken })
+        })
+    } catch (error) {
+        console.log(error)
     }
 }
