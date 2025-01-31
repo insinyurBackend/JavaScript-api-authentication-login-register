@@ -57,3 +57,13 @@ export const register = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+// Login
+
+export const login = async (req, res) => {
+    try {
+
+    } catch (error) {
+
+    }
+}
