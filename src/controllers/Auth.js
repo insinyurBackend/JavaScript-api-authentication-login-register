@@ -93,7 +93,11 @@ export const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         })
 
-        res.json({ accessToken })
+        res.status(200).json({
+            status: "success",
+            message: `${username} login successfully`,
+            accessToken
+        })
 
     } catch (error) {
         res.status(404).json({
@@ -126,7 +130,11 @@ export const refreshToken = async (req, res) => {
             const username = user.username
             const email = user.email
             const accessToken = jwt.sign({ userId, username, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
-            res.json({ accessToken })
+            res.status(201).json({
+                status: "Success",
+                message: "Generate new access token",
+                accessToken
+            })
         })
     } catch (error) {
         console.log(error)
@@ -136,8 +144,32 @@ export const refreshToken = async (req, res) => {
 // Logout
 export const logout = async (req, res) => {
     try {
+        const token = req.cookies.refreshToken
+        if (!token) {
+            return res.status(404).json({ message: "Refresh token not found" })
+        }
+        const user = await Users.findOne({
+            where: {
+                refresh_token: token
+            }
+        })
+        if (!user) {
+            return res.status(403).json({ message: "No user login" })
+        }
+        const email = user.email
+        const username = user.username
 
+        await user.update({ refresh_token: null }, {
+            where: {
+                email: email
+            }
+        })
+        res.clearCookie('refreshToken')
+        return res.status(200).json({
+            status: "Success",
+            message: `${username} logged out successfully`
+        })
     } catch (error) {
-
+        console.log(error)
     }
 }
