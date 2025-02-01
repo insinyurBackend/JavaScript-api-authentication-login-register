@@ -15,7 +15,8 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "dev": "node --watch ./src/app.js"
+    "dev": "node --watch ./src/app.js",
+    "swagger:generate": "node src/config/swagger/swagger.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
