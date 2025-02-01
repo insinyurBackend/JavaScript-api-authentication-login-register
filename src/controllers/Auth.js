@@ -141,6 +141,32 @@ export const refreshToken = async (req, res) => {
     }
 }
 
+// User profile login
+export const me = async (req, res) => {
+    try {
+        const token = req.cookies.refreshToken
+        if (!token) {
+            return res.status(404).json({ message: "User not login, login please" })
+        }
+        const user = await Users.findOne({
+            where: {
+                refresh_token: token
+            }
+        })
+        if (!user) {
+            return res.status(403).json({ message: "Refresh token not found, login please" })
+        }
+        const uuid = user.uuid
+        const username = user.username
+        const email = user.email
+        return res.status(200).json({
+            uuid, username, email
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
 // Logout
 export const logout = async (req, res) => {
     try {
